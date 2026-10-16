@@ -19,8 +19,8 @@ function parseCSV(text) {
 function cleanBookings(rows) {
   const seen = new Set();
   return rows.filter((r) => {
-    if (seen.has(r['고객ID'])) return false;
-    seen.add(r['고객ID']);
+    if (seen.has(r['예약ID'])) return false;
+    seen.add(r['예약ID']);
     return true;
   });
 }
@@ -31,7 +31,7 @@ function cleanBookings(rows) {
  */
 function noShowRate(rows) {
   const noShow = rows.filter((r) => r['상태'] === '노쇼').length;
-  const denom = rows.length;
+  const denom = rows.filter((r) => r['상태'] === '노쇼' || r['상태'] === '이용완료').length;
   return { noShow, denom, rate: denom ? noShow / denom : 0 };
 }
 
@@ -43,7 +43,7 @@ function rateBy(rows, key) {
   const groups = {};
   for (const r of rows) (groups[r[key]] = groups[r[key]] || []).push(r);
   const out = {};
-  for (const k of Object.keys(groups)) out[k] = noShowRate(rows);
+  for (const k of Object.keys(groups)) out[k] = noShowRate(groups[k]);
   return out;
 }
 
