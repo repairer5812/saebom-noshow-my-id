@@ -18,7 +18,12 @@ function parseCSV(text) {
  * TODO: 구현하기. 지금은 받은 행을 그대로 돌려준다.
  */
 function cleanBookings(rows) {
-  return rows;
+  const seen = new Set();
+  return rows.filter((row) => {
+    if (seen.has(row['예약ID'])) return false;
+    seen.add(row['예약ID']);
+    return true;
+  });
 }
 
 /**
@@ -27,7 +32,17 @@ function cleanBookings(rows) {
  * TODO: 구현하기.
  */
 function noShowRate(rows) {
-  return { noShow: 0, denom: 0, rate: 0 };
+  let noShow = 0;
+  let denom = 0;
+  rows.forEach((row) => {
+    if (row['상태'] === '노쇼') {
+      noShow++;
+      denom++;
+    } else if (row['상태'] === '이용완료') {
+      denom++;
+    }
+  });
+  return { noShow, denom, rate: denom ? noShow / denom : 0 };
 }
 
 /**
@@ -39,6 +54,10 @@ function rateBy(rows, key) {
   return {};
 }
 
+// 0~1 사이 비율을 '20.1%'처럼 소수 첫째 자리 백분율 글로 바꾼다
+function formatPercent(rate) {
+  return (rate * 100).toFixed(1) + '%';
+}
 if (typeof module !== 'undefined') {
   module.exports = { parseCSV, cleanBookings, noShowRate, rateBy };
 }
