@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>새봄스페이스 노쇼 대시보드</title>
+<link rel="stylesheet" href="style.css">
+</head><body>
+<header><h1>새봄스페이스 노쇼 대시보드</h1>
+<p class="sub">시범 6개 지점, 2026년 8월 24일~10월 18일 예약 기록(교육용 가상 자료)</p></header>
+<main>
+  <section class="cards">
+    <div class="card"><p class="k">전체 노쇼율</p><p class="v" id="overall">-</p><p class="note" id="overall-note"></p></div>
+  </section>
+  <section><h2>결제 방식별</h2><div id="by-pay" class="chart"></div></section>
+  <!-- 다음 차시에 필터, 예약 시점별 차트, 알림 문구 미리보기를 더한다 -->
+</main>
+<script src="data/bookings.js"></script>
+<script src="app.js"></script>
+<script src="dashboard.js"></script>
+</body></html>

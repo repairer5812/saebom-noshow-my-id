@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>테스트: 새봄 노쇼 대시보드</title>
+<style>
+body{font-family:system-ui,-apple-system,"Segoe UI","Malgun Gothic",sans-serif;margin:24px;color:#222;max-width:860px}
+h1{font-size:22px}.ok{color:#1d7a3a}.fail{color:#b3261e}li{margin:6px 0;line-height:1.5}
+.sum{font-size:18px;font-weight:700;margin:12px 0}
+</style></head><body>
+<h1>테스트 결과</h1>
+<p>이 파일을 브라우저로 열면 app.js 의 함수를 시험합니다. 코드를 고친 뒤 새로고침하세요.</p>
+<p class="sum" id="sum"></p><ul id="list"></ul>
+<script src="data/bookings.js"></script>
+<script src="app.js"></script>
+<script src="tests/tests.js"></script>
+<script>
+const results = runTests({ parseCSV, cleanBookings, noShowRate, rateBy }, BOOKINGS_CSV);
+const pass = results.filter(r => r.ok).length;
+document.getElementById('sum').textContent = `${pass}/${results.length} 통과`;
+document.getElementById('list').innerHTML = results.map(r =>
+  `<li class="${r.ok ? 'ok' : 'fail'}">${r.ok ? '통과' : '실패'}: ${r.name}${r.ok ? '' : ' <small>(' + r.msg + ')</small>'}</li>`).join('');
+</script>
+</body></html>
