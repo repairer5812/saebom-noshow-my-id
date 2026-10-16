@@ -51,7 +51,18 @@ function noShowRate(rows) {
  * TODO: 구현하기.
  */
 function rateBy(rows, key) {
-  return {};
+  const grouped = {};
+  rows.forEach((row) => {
+    const value = row[key];
+    if (!grouped[value]) grouped[value] = [];
+    grouped[value].push(row);
+  });
+
+  const result = {};
+  Object.keys(grouped).forEach((value) => {
+    result[value] = noShowRate(grouped[value]);
+  });
+  return result;
 }
 
 // 0~1 사이 비율을 '20.1%'처럼 소수 첫째 자리 백분율 글로 바꾼다

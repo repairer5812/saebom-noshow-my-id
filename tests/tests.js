@@ -36,6 +36,20 @@ function runTests(api, csvText) {
   });
   t('전체 노쇼율은 소수 셋째 자리 반올림 0.201', () => eq(Math.round(api.noShowRate(clean).rate * 1000) / 1000, 0.201, '노쇼율'));
   // rateBy 테스트는 여기에 더한다. 기대값은 docs/자료설명.md 의 표를 쓴다.
+  t('결제 방식별 노쇼율', () => {
+    const r = api.rateBy(clean, '결제방식');
+    eq(r['선결제'] && r['선결제'].noShow, 284, '선결제 노쇼');
+    eq(r['선결제'] && r['선결제'].denom, 1633, '선결제 분모');
+    eq(r['현장결제'] && r['현장결제'].noShow, 351, '현장결제 노쇼');
+    eq(r['현장결제'] && r['현장결제'].denom, 1528, '현장결제 분모');
+  });
+  t('예약 시점별 노쇼율(당일, 7일 이상 전)', () => {
+    const r = api.rateBy(clean, '예약시점');
+    eq(r['당일'] && r['당일'].noShow, 173, '당일 노쇼');
+    eq(r['당일'] && r['당일'].denom, 1322, '당일 분모');
+    eq(r['7일 이상 전'] && r['7일 이상 전'].noShow, 79, '7일 이상 전 노쇼');
+    eq(r['7일 이상 전'] && r['7일 이상 전'].denom, 264, '7일 이상 전 분모');
+  });
   return results;
 }
 
