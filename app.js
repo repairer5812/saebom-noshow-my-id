@@ -65,10 +65,17 @@ function rateBy(rows, key) {
   return result;
 }
 
+/**
+ * 하루 전 문자 알림 대상: 예약시점이 '당일'이 아니고 상태가 '취소'가 아닌 예약만 남긴다.
+ */
+function reminderTargets(rows) {
+  return rows.filter((row) => row['예약시점'] !== '당일' && row['상태'] !== '취소');
+}
+
 // 0~1 사이 비율을 '20.1%'처럼 소수 첫째 자리 백분율 글로 바꾼다
 function formatPercent(rate) {
   return (rate * 100).toFixed(1) + '%';
 }
 if (typeof module !== 'undefined') {
-  module.exports = { parseCSV, cleanBookings, noShowRate, rateBy };
+  module.exports = { parseCSV, cleanBookings, noShowRate, rateBy, reminderTargets };
 }

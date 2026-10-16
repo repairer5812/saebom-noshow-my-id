@@ -50,6 +50,13 @@ function runTests(api, csvText) {
     eq(r['7일 이상 전'] && r['7일 이상 전'].noShow, 79, '7일 이상 전 노쇼');
     eq(r['7일 이상 전'] && r['7일 이상 전'].denom, 264, '7일 이상 전 분모');
   });
+  t('하루 전 알림 대상 건수와 문자비', () => {
+    const reminderFn = api.reminderTargets || (typeof reminderTargets === 'function' ? reminderTargets : null);
+    if (!reminderFn) throw new Error('reminderTargets 함수가 없다');
+    const targets = reminderFn(clean);
+    eq(targets.length, 1839, '알림 대상 건수');
+    eq(targets.length * 20, 36780, '문자비');
+  });
   return results;
 }
 

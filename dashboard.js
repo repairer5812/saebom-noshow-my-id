@@ -27,11 +27,13 @@
     const filteredRows = selectedBranch === '전체'
       ? rows
       : rows.filter((row) => row['지점'] === selectedBranch);
+    const reminderCount = reminderTargets(filteredRows).length;
     const overall = noShowRate(filteredRows);
     document.getElementById('overall').textContent = overall.denom ? pct(overall.rate) : '계산 전';
     document.getElementById('overall-note').textContent = overall.denom ? `노쇼 ${overall.noShow}건 / 이용완료와 노쇼 ${overall.denom}건` : '표시할 예약 기록이 없습니다.';
     document.getElementById('by-pay').innerHTML = renderBars(rateBy(filteredRows, '결제방식'), payOrder);
     document.getElementById('by-timing').innerHTML = renderBars(rateBy(filteredRows, '예약시점'), timingOrder);
+    document.getElementById('timing-reminder-note').textContent = `하루 전 알림 대상 ${reminderCount}건, 문자비 ${reminderCount * 20}원(1건 20원)`;
   }
 
   branchSelect.addEventListener('change', (event) => render(event.target.value));
